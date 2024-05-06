@@ -1,12 +1,6 @@
 <template>
     <enso-table class="box is-paddingless raises-on-hover"
-        id="tutorials">
-        <template #placement="{ column, row }">
-            <span class="tag is-table-tag is-info">
-                {{ column.enum._get(row.placement) }}
-            </span>
-        </template>
-    </enso-table>
+        id="file-types"/>
 </template>
 
 <script>
