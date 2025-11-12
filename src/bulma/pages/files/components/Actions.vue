@@ -1,6 +1,6 @@
 <template>
     <div class="is-flex">
-        <template v-if="visible || handling">
+        <template v-if="thumbnail || visible || handling">
             <template v-if="file.isManageable">
                 <a class="button is-small is-naked"
                     @click="makePrivate"
@@ -77,15 +77,13 @@
             </span>
         </a>
         <a class="button is-small is-naked"
-            @click="$emit(visible ? 'hide' : 'show')">
+            @click="$emit(visible ? 'hide' : 'show')"
+            v-if="!thumbnail">
             <span class="icon is-small">
                 <fa icon="ellipsis-h"/>
             </span>
         </a>
         <clipboard ref="clipboard"/>
-        <preview :file="file"
-            v-if="preview"
-            @close="preview = false"/>
     </div>
 </template>
 
@@ -103,7 +101,6 @@ import Clipboard from '@enso-ui/clipboard';
 import { Fade } from '@enso-ui/transitions';
 import { EnsoFile } from '@enso-ui/mixins';
 import { Dropdown } from 'v-tooltip';
-import Preview from './Preview.vue';
 
 library.add([
     faEye, faCloudDownloadAlt, faTrashAlt, faLink,
@@ -113,7 +110,7 @@ library.add([
 export default {
     name: 'Actions',
 
-    components: { Fade, Confirmation, Clipboard, Fa, Preview, Dropdown },
+    components: { Fade, Confirmation, Clipboard, Fa, Dropdown },
 
     inject: ['canAccess', 'errorHandler', 'http', 'i18n', 'route'],
 
@@ -126,6 +123,10 @@ export default {
             type: Object,
             required: true,
         },
+        thumbnail: {
+            type: Boolean,
+            deafult: false,
+        }
     },
 
     emits: ['copy-to-clipboard', 'delete', 'hide', 'show'],
@@ -158,13 +159,8 @@ export default {
                 .catch(this.errorHandler);
         },
         show() {
-            if (this.ensoFile.isViewable()) {
-                this.preview = true;
-            } else {
-                const path = this.route('core.files.show', this.file.id);
-                window.open(path, '_blank').focus();
-            }
-
+            const path = this.route('core.files.show', this.file.id);
+            window.open(path, '_blank').focus();
         },
         makePrivate() {
             this.http.patch(this.route('core.files.makePrivate', this.file.id))
