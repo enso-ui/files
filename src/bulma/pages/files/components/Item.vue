@@ -27,7 +27,7 @@
                                 <span class="base"
                                     @click.right.prevent="edit">
                                     {{ file.name }}
-                                </span>    
+                                </span>
                             </div>
                         </div>
                         <div class="level-item"
@@ -35,7 +35,7 @@
                             <span class="extension"
                                 @click.right.prevent="edit">
                                 .{{ file.extension }}
-                            </span>   
+                            </span>
                         </div>
                     </div>
                 </div>
@@ -63,7 +63,6 @@
             <div class="level-left is-flex-shrink-1 min-w-0">
                 <div class="level-item is-flex-shrink-1 min-w-0">
                     <p class="info is-family-code is-size-7 ellipsis">
-                        <span class="has-text-weight-bold">{{ file.size }}</span> {{ timestamp }}
                         <span class="has-text-weight-bold">{{ file.size }}</span> {{ timestamp }}
                     </p>
                 </div>
@@ -119,7 +118,7 @@ export default {
         },
         timestamp() {
             return format(this.file.createdAt, 'd M Y h:i');
-        }
+        },
     },
 
     methods: {
@@ -170,7 +169,7 @@ export default {
         .level {
             .level-left {
                 overflow: hidden;
-                
+
                 .filename .base, .info {
                     white-space: nowrap;
                     text-overflow: ellipsis
