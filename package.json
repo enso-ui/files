@@ -1,6 +1,6 @@
 {
   "name": "@enso-ui/files",
-  "version": "5.2.1",
+  "version": "5.2.2",
   "description": "Basic files package",
   "main": "index.js",
   "scripts": {
