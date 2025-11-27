@@ -1,6 +1,6 @@
 <template>
     <div class="is-flex">
-        <template v-if="thumbnail || visible || handling">
+        <template v-if="visible || handling">
             <template v-if="file.isManageable">
                 <a class="button is-small is-naked"
                     @click="makePrivate"
@@ -110,7 +110,9 @@ library.add([
 export default {
     name: 'Actions',
 
-    components: { Fade, Confirmation, Clipboard, Fa, Dropdown },
+    components: {
+        Fade, Confirmation, Clipboard, Fa, Dropdown,
+    },
 
     inject: ['canAccess', 'errorHandler', 'http', 'i18n', 'route'],
 
@@ -126,7 +128,7 @@ export default {
         thumbnail: {
             type: Boolean,
             deafult: false,
-        }
+        },
     },
 
     emits: ['copy-to-clipboard', 'delete', 'hide', 'show'],

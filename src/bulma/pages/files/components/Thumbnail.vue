@@ -16,13 +16,13 @@
                     <div class="ellipsis">
                         <span class="base">
                             {{ file.name }}.
-                        </span>    
+                        </span>
                     </div>
                 </div>
                 <div class="level-item">
                     <span class="extension">
                         {{ file.extension }}
-                    </span>    
+                    </span>
                 </div>
             </div>
             <p class="info is-family-code is-size-7">
@@ -78,11 +78,14 @@ export default {
             type: Object,
             required: true,
         },
+        actions: {
+            type: Boolean,
+            default: true,
+        },
     },
 
     data: v => ({
         editing: false,
-        actions: false,
         message: null,
         originalName: v.file.name,
     }),
@@ -96,7 +99,7 @@ export default {
         },
         timestamp() {
             return format(this.file.createdAt, 'd M Y h:i');
-        }
+        },
     },
 
     methods: {
