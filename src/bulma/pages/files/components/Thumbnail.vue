@@ -1,5 +1,6 @@
 <template>
-    <div class="column is-narrow p-1">
+    <div class="column is-narrow p-1"
+          v-click-outside="() => actions = false">
         <div class="box file-thumbnail raises-on-hover p-1 mb-1">
             <div class="preview has-text-centered">
                 <figure class="image is-192x192 is-flex is-align-content-center is-justify-content-center"
@@ -10,17 +11,32 @@
                     size="8x"
                     v-else/>
             </div>
-            <div class="filename has-text-weight-bold is-size-7 level m-0"
-                v-tooltip="`${file.name}.${file.extension}`">
-                <div class="level-item is-flex-shrink-1 min-w-0">
+             <div class="level-item"
+                    v-if="editing">
+                    <input class="input is-small is-fullwidth"
+                        v-model="file.name"
+                        v-click-outside="cancelEdit"
+                        v-focus
+                        v-select-on-focus
+                        @keydown.enter="update"
+                        @keydown.esc="cancelEdit">
+            </div>
+            <div class="filename has-text-weight-bold has-text-centered is-size-7 
+                is-flex is-justify-content-center m-0"
+                v-tooltip="`${file.name}.${file.extension}`"
+                v-else >
+                <div class="level-item is-flex-shrink-1 min-w-0 mr-0">
                     <div class="ellipsis">
-                        <span class="base">
+                        <span class=""
+                         @click.right.prevent="edit">
                             {{ file.name }}.
                         </span>
                     </div>
                 </div>
-                <div class="level-item">
-                    <span class="extension">
+                <div class="level-item"
+                    v-if="!editing">
+                    <span class="extension"
+                        @click.right.prevent="edit">
                         {{ file.extension }}
                     </span>
                 </div>

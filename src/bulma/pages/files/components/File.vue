@@ -13,6 +13,6 @@ const props = defineProps({
         default: false,
     },
 })
-    
+
 const component = computed(() => props.thumbnail ? Thumbnail : Item);
 </script>
