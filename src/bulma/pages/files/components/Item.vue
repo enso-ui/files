@@ -117,7 +117,7 @@ export default {
             return (new EnsoFile(this.file)).icon();
         },
         timestamp() {
-            return format(this.file.createdAt, 'd M Y h:i');
+            return format(this.file.createdAt, 'd M Y H:i');
         },
     },
 
