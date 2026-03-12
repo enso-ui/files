@@ -1,6 +1,5 @@
 <template>
-    <div class="column is-narrow p-1"
-        v-click-outside="() => actions = false">
+    <div class="column is-narrow p-1">
         <div class="box file-thumbnail raises-on-hover p-1 mb-1">
             <div class="preview has-text-centered">
                 <figure class="image is-192x192 is-flex is-align-content-center is-justify-content-center"
