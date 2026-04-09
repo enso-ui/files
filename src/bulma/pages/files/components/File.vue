@@ -3,7 +3,7 @@
 </template>
 
 <script setup>
-import { defineProps, computed } from 'vue';
+import { computed } from 'vue';
 import Item from './Item.vue';
 import Thumbnail from './Thumbnail.vue';
 

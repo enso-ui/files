@@ -42,11 +42,11 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
 import { debounce } from 'lodash';
 import Loader from '@enso-ui/loader/bulma';
-import Top from './components/Top.vue'
-import Folder from './components/Folder.vue'
+import { files } from '../../../pinia/files';
+import Top from './components/Top.vue';
+import Folder from './components/Folder.vue';
 import File from './components/File.vue';
 
 export default {
@@ -68,7 +68,12 @@ export default {
     }),
 
     computed: {
-        ...mapGetters('files', ['browsable', 'uploadFolder']),
+        browsable() {
+            return files().browsable;
+        },
+        uploadFolder() {
+            return files().uploadFolder;
+        },
         folderId() {
             return this.currentFolder?.id;
         },
@@ -115,6 +120,10 @@ export default {
 
 <style lang="scss">
     .file-manager {
+        .columns {
+            --bulma-column-gap: 1rem;
+        }
+
         .control.has-icons-right {
             .icon.clear-button {
                 pointer-events: all;
@@ -126,9 +135,24 @@ export default {
         }
 
         .folders {
+            background-color: var(--bulma-card-header-background-color);
+            border-color: var(--enso-surface-border);
+            box-shadow: none;
+
             .button {
+                color: var(--bulma-text);
+                justify-content: flex-start;
+                padding-inline: 0.65rem;
+                width: 100%;
+
                 .icon {
                     width: 2em;
+                }
+
+                &:hover,
+                &:focus {
+                    background-color: var(--enso-surface);
+                    color: var(--bulma-text-strong);
                 }
             }
         }
@@ -137,6 +161,10 @@ export default {
             .selected {
                 opacity: 1;
             }
+        }
+
+        .files {
+            min-width: 0;
         }
     }
 </style>

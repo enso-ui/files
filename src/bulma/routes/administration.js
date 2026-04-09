@@ -1,6 +1,6 @@
 import routeImporter from '@enso-ui/ui/src/modules/importers/routeImporter';
 
-const routes = routeImporter(require.context('./administration', false, /.*\.js$/));
+const routes = routeImporter.fromGlob(import.meta.glob('./administration/*.js', { eager: true }));
 
 export default {
     path: '/administration',

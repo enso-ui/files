@@ -1,10 +1,10 @@
 <template>
-    <div class="box file-box raises-on-hover p-1 mb-1"
+    <div class="box file-box p-1 mb-1"
         v-click-outside="() => actions = false">
         <div class="level is-mobile m-0">
             <div class="level-left is-flex-grow-1 is-flex-shrink-1 min-w-0"
                 v-tooltip="`${file.name}.${file.extension}`">
-                <div class="level-item is-narrow mr-1">
+                <div class="level-item is-narrow mr-0">
                     <p class="has-text-centered">
                         <fa :icon="icon"/>
                     </p>
@@ -21,21 +21,14 @@
                 </div>
                 <div class="level-item is-justify-content-flex-start is-flex-shrink-1 min-w-0"
                     v-else>
-                    <div class="level m-0 is-flex-shrink-1 min-w-0 has-text-weight-bold is-size-7">
-                        <div class="level-item m-0 is-flex-shrink-1 min-w-0">
-                            <div class="ellipsis">
-                                <span class="base"
-                                    @click.right.prevent="edit">
-                                    {{ file.name }}
-                                </span>
-                            </div>
-                        </div>
-                        <div class="level-item"
-                            v-if="!editing">
-                            <span class="extension"
+                    <div class="filename is-flex is-align-items-baseline is-flex-shrink-1 min-w-0 has-text-weight-bold is-size-7">
+                        <div class="ellipsis">
+                            <span class="base"
                                 @click.right.prevent="edit">
-                                .{{ file.extension }}
+                                {{ file.name }}
                             </span>
+                            <span class="extension"
+                                @click.right.prevent="edit">.{{ file.extension }}</span>
                         </div>
                     </div>
                 </div>
@@ -63,13 +56,13 @@
             <div class="level-left is-flex-shrink-1 min-w-0">
                 <div class="level-item is-flex-shrink-1 min-w-0">
                     <p class="info is-family-code is-size-7 ellipsis">
-                        <span class="has-text-weight-bold">{{ file.size }}</span> {{ timestamp }}
+                        <span class="has-text-weight-bold ml-1">{{ file.size }}</span> {{ timestamp }}
                     </p>
                 </div>
             </div>
             <div class="level-right">
                 <div class="level-item">
-                    <avatar class="is-24x24"
+                    <avatar class="is-24x24 mr-1"
                         tooltip
                         :user="file.owner"
                         v-if="file.owner"/>
@@ -164,13 +157,16 @@ export default {
     }
 
     .box.file-box {
+        background-color: var(--enso-surface);
+        border-color: var(--enso-surface-border);
+        box-shadow: none;
         cursor: pointer;
 
         .level {
             .level-left {
                 overflow: hidden;
 
-                .filename .base, .info {
+                .filename .base, .filename .extension, .info {
                     white-space: nowrap;
                     text-overflow: ellipsis
                 }
@@ -185,5 +181,13 @@ export default {
                 }
             }
         }
+
+        &:hover {
+            border-color: var(--enso-control-highlight-border);
+        }
+    }
+
+    .filename .extension {
+        margin-left: 0;
     }
 </style>

@@ -1,6 +1,6 @@
 <template>
     <div class="column is-narrow p-1">
-        <div class="box file-thumbnail raises-on-hover p-1 mb-1">
+        <div class="box file-thumbnail p-1 mb-1">
             <div class="preview has-text-centered">
                 <figure class="image is-192x192 is-flex is-align-content-center is-justify-content-center"
                     v-if="isImage">
@@ -158,6 +158,9 @@ export default {
 }
 
 .box.file-thumbnail {
+    background-color: var(--enso-surface);
+    border-color: var(--enso-surface-border);
+    box-shadow: none;
     cursor: pointer;
     width: 12.5em;
 
@@ -189,6 +192,10 @@ export default {
                 margin: 0 0 0 auto;
             }
         }
+    }
+
+    &:hover {
+        border-color: var(--enso-control-highlight-border);
     }
 }
 </style>

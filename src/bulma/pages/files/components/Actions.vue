@@ -2,85 +2,98 @@
     <div class="is-flex">
         <template v-if="visible || handling">
             <template v-if="file.isManageable">
-                <a class="button is-small is-naked"
+                <a class="button is-small is-naked p-2"
                     @click="makePrivate"
                     v-if="file.isPublic && canAccess('core.files.makePrivate')">
                     <span class="icon is-small">
-                        <fa icon="unlock"/>
+                        <fa :icon="faUnlock"
+                            size="xs"/>
                     </span>
                 </a>
-                <a class="button is-small is-naked"
+                <a class="button is-small is-naked p-2"
                     @click="makePublic"
                     v-else-if="!file.isPublic && canAccess('core.files.makePublic')">
                     <span class="icon is-small">
-                        <fa icon="lock"/>
+                        <fa :icon="faLock"
+                            size="xs"/>
                     </span>
                 </a>
             </template>
-            <dropdown v-if="file.isAccessible && canAccess('core.files.link')"
+            <dropdown class="file-actions share"
+                v-if="file.isAccessible && canAccess('core.files.link')"
                 ref="dropdown"
                 @hide="handling = false">
-                <a class="button is-small is-naked"
+                <a class="button is-small is-naked p-2"
                     @click="handling = true">
                     <span class="icon is-small">
-                        <fa icon="link"/>
+                        <fa :icon="faLink"
+                            size="xs"/>
                     </span>
                 </a>
                 <template #popper>
-                    <ul>
+                    <div class="file-actions share-menu">
+                        <ul>
                         <li v-for="{ value, label } in enums.temporaryLinkDuration._filter()"
                             :key="value">
-                            <button class="button is-small is-fullwidth"
+                            <button class="button is-small is-fullwidth file-actions share-button"
                                 @click="$refs.dropdown.hide(); link(value)">
                                 {{ label }}
                             </button>
                         </li>
-                    </ul>
+                        </ul>
+                    </div>
                 </template>
             </dropdown>
-            <a class="button is-small is-naked"
+            <a class="button is-small is-naked p-2"
                 @click="show"
                 v-if="isViewable">
                 <span class="icon is-small">
-                    <fa icon="eye"/>
+                    <fa :icon="faEye"
+                        size="xs"/>
                 </span>
             </a>
-            <a class="button is-small is-naked"
+            <a class="button is-small is-naked p-2"
                 :href="route('core.files.download', file.id)"
                 v-if="file.isAccessible && canAccess('core.files.download')">
                 <span class="icon is-small">
-                    <fa icon="cloud-download-alt"/>
+                    <fa :icon="faCloudArrowDown"
+                        size="xs"/>
                 </span>
             </a>
             <confirmation placement="left"
                 @confirm="$emit('delete')"
                 @hide="handling = false"
                 v-if="file.isManageable && canAccess('core.files.destroy')">
-                <a class="button is-small is-naked"
+                <a class="button is-small is-naked p-2"
                     @click="handling = true">
                     <span class="icon is-small">
-                        <fa icon="trash-alt"/>
+                        <fa :icon="faTrashCan"
+                            size="xs"/>
                     </span>
                 </a>
             </confirmation>
         </template>
-        <a class="button is-small is-naked"
+        <a class="button is-small is-naked p-2"
             v-if="canAccess('core.files.favorite') && file.type.isBrowsable"
+            :class="{ 'has-text-warning': file.isFavorite }"
             @click="toggleFavorite">
             <span class="icon is-small"
                 v-if="file.isFavorite">
-                <fa icon="star"/>
+                <fa :icon="faStar"
+                    size="xs"/>
             </span>
             <span class="icon is-small"
                 v-else>
-                <fa :icon="['far', 'star']"/>
+                <fa :icon="farStar"
+                    size="xs"/>
             </span>
         </a>
-        <a class="button is-small is-naked"
+        <a class="button is-small is-naked p-2"
             @click="$emit(visible ? 'hide' : 'show')"
             v-if="!thumbnail">
             <span class="icon is-small">
-                <fa icon="ellipsis-h"/>
+                <fa :icon="faEllipsis"
+                    size="xs"/>
             </span>
         </a>
         <clipboard ref="clipboard"/>
@@ -88,12 +101,10 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
 import { FontAwesomeIcon as Fa } from '@fortawesome/vue-fontawesome';
-import { library } from '@fortawesome/fontawesome-svg-core';
 import {
-    faEye, faCloudDownloadAlt, faTrashAlt, faLink,
-    faStar, faLock, faUnlock, faEllipsisH,
+    faEye, faCloudArrowDown, faTrashCan, faLink,
+    faStar, faLock, faUnlock, faEllipsis,
 } from '@fortawesome/free-solid-svg-icons';
 import { faStar as farStar } from '@fortawesome/free-regular-svg-icons';
 import Confirmation from '@enso-ui/confirmation/bulma';
@@ -101,11 +112,7 @@ import Clipboard from '@enso-ui/clipboard';
 import { Fade } from '@enso-ui/transitions';
 import { EnsoFile } from '@enso-ui/mixins';
 import { Dropdown } from 'v-tooltip';
-
-library.add([
-    faEye, faCloudDownloadAlt, faTrashAlt, faLink,
-    faStar, farStar, faLock, faUnlock, faEllipsisH,
-]);
+import { useStore } from '../../../../utils/pinia';
 
 export default {
     name: 'Actions',
@@ -127,13 +134,22 @@ export default {
         },
         thumbnail: {
             type: Boolean,
-            deafult: false,
+            default: false,
         },
     },
 
     emits: ['copy-to-clipboard', 'delete', 'hide', 'show'],
 
     data: v => ({
+        faCloudArrowDown,
+        faEllipsis,
+        faEye,
+        faLink,
+        faLock,
+        faStar,
+        faTrashCan,
+        faUnlock,
+        farStar,
         ensoFile: new EnsoFile(v.file),
         message: null,
         preview: false,
@@ -141,7 +157,9 @@ export default {
     }),
 
     computed: {
-        ...mapState(['enums']),
+        enums() {
+            return useStore('enums').enums;
+        },
         isViewable() {
             return this.file.isAccessible
                 && this.ensoFile.isViewable()
@@ -182,3 +200,43 @@ export default {
     },
 };
 </script>
+
+<style scoped lang="scss">
+:deep(.file-actions .share) {
+    --enso-tooltip-background: var(--bulma-scheme-main);
+    --enso-tooltip-color: var(--bulma-text);
+    --enso-tooltip-border-color: var(--bulma-border);
+}
+
+:deep(.file-actions .share-menu) {
+    min-width: 4.75rem;
+
+    ul {
+        display: flex;
+        flex-direction: column;
+        gap: 0.35rem;
+        list-style: none;
+        margin: 0;
+        padding: 0;
+    }
+}
+
+:deep(.file-actions .share-button) {
+    background-color: var(--enso-filter-control-surface);
+    color: var(--bulma-text-strong);
+    justify-content: center;
+
+    &:hover,
+    &:focus {
+        background-color: var(--enso-filter-surface);
+        color: var(--bulma-text-strong);
+    }
+}
+
+.is-flex > .button.is-small.is-naked {
+    height: 1.85rem;
+    min-height: 1.85rem;
+    width: 1.85rem;
+    padding: 0;
+}
+</style>

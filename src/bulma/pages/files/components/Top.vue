@@ -1,5 +1,5 @@
 <template>
-    <div class="level is-mobile mb-4">
+    <div class="level is-mobile mb-4 files-top">
         <div class="level-left">
             <div class="level-item">
                 <div class="field has-addons has-addons-right">
@@ -9,10 +9,10 @@
                             @input="$emit('update:query', $event.target.value)"
                             type="text"
                             :placeholder="i18n('Filter files')">
-                        <span class="icon is-small is-left">
-                            <fa icon="search"/>
+                        <span class="icon is-small is-left has-text-muted">
+                            <fa :icon="faSearch"/>
                         </span>
-                        <span class="icon is-small is-right clear-button"
+                        <span class="icon is-small is-right clear-button has-text-muted is-clickable"
                             @click="$emit('clear')"
                             v-if="query">
                             <a class="delete is-small"/>
@@ -33,19 +33,28 @@
                     compact
                     multiple
                     :url="route('core.uploads.store')"
-                    file-key="upload"/>
+                    file-key="upload">
+                    <template #control="{ controlEvents }">
+                        <a class="button"
+                            v-on="controlEvents">
+                            <span class="icon">
+                                <fa :icon="faUpload"/>
+                            </span>
+                        </a>
+                    </template>
+                </enso-uploader>
             </div>
             <div class="level-item">
                 <a class="button"
                     @click="$emit('refresh')">
                     <span class="icon">
-                        <fa icon="sync"/>
+                        <fa :icon="faArrowsRotate"/>
                     </span>
                 </a>
             </div>
         </div>
     </div>
-    <enso-date-filter class="box raises-on-hover"
+    <enso-date-filter class="box files-top__date-filter"
         v-bind="$attrs"
         v-model:filter="dateFilter"
         compact/>
@@ -53,12 +62,9 @@
 
 <script>
 import { FontAwesomeIcon as Fa } from '@fortawesome/vue-fontawesome';
-import { library } from '@fortawesome/fontawesome-svg-core';
-import { faSearch, faSync } from '@fortawesome/free-solid-svg-icons';
+import { faSearch, faArrowsRotate, faUpload } from '@fortawesome/free-solid-svg-icons';
 import { EnsoUploader } from '@enso-ui/uploader/bulma';
 import { EnsoDateFilter } from '@enso-ui/filters/bulma';
-
-library.add(faSearch, faSync);
 
 export default {
     name: 'Top',
@@ -81,7 +87,56 @@ export default {
     emits: ['clear', 'refresh', 'update:query'],
 
     data: () => ({
+        faArrowsRotate,
+        faSearch,
+        faUpload,
         dateFilter: 'thisMonth',
     }),
 };
 </script>
+
+<style lang="scss">
+.files-top {
+    padding: 0.15rem 0;
+
+    .input.filter,
+    .button {
+        background-color: var(--enso-filter-control-surface);
+    }
+
+    .input.filter {
+        color: var(--bulma-input-color);
+
+        &::placeholder {
+            color: var(--bulma-text-light);
+        }
+    }
+
+    .button {
+        color: var(--bulma-text-strong);
+
+        &:hover,
+        &:focus {
+            background-color: var(--enso-filter-surface);
+            color: var(--bulma-text-strong);
+        }
+    }
+
+    .clear-button {
+        .delete {
+            background-color: var(--bulma-scheme-main-ter);
+
+            &::before,
+            &::after {
+                background-color: var(--bulma-text);
+            }
+        }
+    }
+
+    &__date-filter {
+        background-color: var(--enso-filter-surface);
+        border: none;
+        box-shadow: none;
+    }
+}
+</style>
