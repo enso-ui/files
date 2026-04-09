@@ -21,7 +21,7 @@
     "@enso-ui/clipboard": "^2.0",
     "@enso-ui/confirmation": "^2.0",
     "@enso-ui/directives": "^2.0",
-    "@enso-ui/filters": "^3.1.8",
+    "@enso-ui/filters": "^3.2.0",
     "@enso-ui/mixins": "^4.0",
     "@enso-ui/modal": "^3.0",
     "@enso-ui/tabs": "^2.0",
