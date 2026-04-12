@@ -2,7 +2,7 @@
     <div class="is-flex">
         <template v-if="visible || handling">
             <template v-if="file.isManageable">
-                <a class="button is-small is-naked p-2"
+                <a class="button is-small is-naked p-1"
                     @click="makePrivate"
                     v-if="file.isPublic && canAccess('core.files.makePrivate')">
                     <span class="icon is-small">
@@ -10,7 +10,7 @@
                             size="xs"/>
                     </span>
                 </a>
-                <a class="button is-small is-naked p-2"
+                <a class="button is-small is-naked p-1"
                     @click="makePublic"
                     v-else-if="!file.isPublic && canAccess('core.files.makePublic')">
                     <span class="icon is-small">
@@ -23,7 +23,7 @@
                 v-if="file.isAccessible && canAccess('core.files.link')"
                 ref="dropdown"
                 @hide="handling = false">
-                <a class="button is-small is-naked p-2"
+                <a class="button is-small is-naked p-1"
                     @click="handling = true">
                     <span class="icon is-small">
                         <fa :icon="faLink"
@@ -44,7 +44,7 @@
                     </div>
                 </template>
             </dropdown>
-            <a class="button is-small is-naked p-2"
+            <a class="button is-small is-naked p-1"
                 @click="show"
                 v-if="isViewable">
                 <span class="icon is-small">
@@ -52,7 +52,7 @@
                         size="xs"/>
                 </span>
             </a>
-            <a class="button is-small is-naked p-2"
+            <a class="button is-small is-naked p-1"
                 :href="route('core.files.download', file.id)"
                 v-if="file.isAccessible && canAccess('core.files.download')">
                 <span class="icon is-small">
@@ -64,7 +64,7 @@
                 @confirm="$emit('delete')"
                 @hide="handling = false"
                 v-if="file.isManageable && canAccess('core.files.destroy')">
-                <a class="button is-small is-naked p-2"
+                <a class="button is-small is-naked p-1"
                     @click="handling = true">
                     <span class="icon is-small">
                         <fa :icon="faTrashCan"
@@ -73,7 +73,7 @@
                 </a>
             </confirmation>
         </template>
-        <a class="button is-small is-naked p-2"
+        <a class="button is-small is-naked p-1"
             v-if="canAccess('core.files.favorite') && file.type.isBrowsable"
             :class="{ 'has-text-warning': file.isFavorite }"
             @click="toggleFavorite">
@@ -88,7 +88,7 @@
                     size="xs"/>
             </span>
         </a>
-        <a class="button is-small is-naked p-2"
+        <a class="button is-small is-naked p-1"
             @click="$emit(visible ? 'hide' : 'show')"
             v-if="!thumbnail">
             <span class="icon is-small">

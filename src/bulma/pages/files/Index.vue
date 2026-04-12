@@ -9,7 +9,7 @@
             @update:query="browse"
             @update:interval="browse"
             @upload-successful="select(uploadFolder)"/>
-        <div class="columns is-variable is-2">
+        <div class="columns is-variable is-1">
             <div class="column is-narrow py-1">
                 <div class="box folders p-1">
                     <p class="is-family-secondary has-text-weight-medium"
@@ -120,10 +120,6 @@ export default {
 
 <style lang="scss">
     .file-manager {
-        .columns {
-            --bulma-column-gap: 1rem;
-        }
-
         .control.has-icons-right {
             .icon.clear-button {
                 pointer-events: all;
@@ -135,12 +131,8 @@ export default {
         }
 
         .folders {
-            background-color: var(--bulma-card-header-background-color);
-            border-color: var(--enso-surface-border);
-            box-shadow: none;
-
             .button {
-                color: var(--bulma-text);
+                opacity: 0.7;
                 justify-content: flex-start;
                 padding-inline: 0.65rem;
                 width: 100%;
@@ -151,8 +143,7 @@ export default {
 
                 &:hover,
                 &:focus {
-                    background-color: var(--enso-surface);
-                    color: var(--bulma-text-strong);
+                    opacity: 1;
                 }
             }
         }

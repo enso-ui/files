@@ -2,14 +2,14 @@
     <div class="box file-box p-1 mb-1"
         v-click-outside="() => actions = false">
         <div class="level is-mobile m-0">
-            <div class="level-left is-flex-grow-1 is-flex-shrink-1 min-w-0"
+            <div class="level-left is-flex-grow-1 is-flex-shrink-1 min-w-0 is-gapless"
                 v-tooltip="`${file.name}.${file.extension}`">
-                <div class="level-item is-narrow mr-0">
+                <div class="level-item is-narrow">
                     <p class="has-text-centered">
                         <fa :icon="icon"/>
                     </p>
                 </div>
-                <div class="level-item"
+                <div class="level-item ml-1"
                     v-if="editing">
                     <input class="input is-small is-fullwidth"
                         v-model="file.name"
@@ -146,10 +146,6 @@ export default {
 </script>
 
 <style lang="scss">
-    .min-w-0 {
-        min-width: 0;
-    }
-
     .ellipsis {
         overflow: hidden;
         text-overflow: ellipsis;
@@ -157,9 +153,6 @@ export default {
     }
 
     .box.file-box {
-        background-color: var(--enso-surface);
-        border-color: var(--enso-surface-border);
-        box-shadow: none;
         cursor: pointer;
 
         .level {

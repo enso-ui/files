@@ -101,7 +101,7 @@ export default {
 
     .input.filter,
     .button {
-        background-color: var(--enso-filter-control-surface);
+        background-color: var(--bulma-box-background-color);
     }
 
     .input.filter {
@@ -134,8 +134,8 @@ export default {
     }
 
     &__date-filter {
-        background-color: var(--enso-filter-surface);
-        border: none;
+        background-color: var(--bulma-box-background-color);
+        border: 1px solid var(--enso-surface-border);
         box-shadow: none;
     }
 }

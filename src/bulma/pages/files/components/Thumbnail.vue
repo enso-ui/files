@@ -158,7 +158,7 @@ export default {
 }
 
 .box.file-thumbnail {
-    background-color: var(--enso-surface);
+    background-color: var(--bulma-box-background-color);
     border-color: var(--enso-surface-border);
     box-shadow: none;
     cursor: pointer;
