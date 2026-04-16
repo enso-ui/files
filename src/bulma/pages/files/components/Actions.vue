@@ -110,9 +110,9 @@ import { faStar as farStar } from '@fortawesome/free-regular-svg-icons';
 import Confirmation from '@enso-ui/confirmation/bulma';
 import Clipboard from '@enso-ui/clipboard';
 import { Fade } from '@enso-ui/transitions';
+import { enums as useEnums } from '@enso-ui/enums/src/pinia/enums';
 import { EnsoFile } from '@enso-ui/mixins';
 import { Dropdown } from 'v-tooltip';
-import { useStore } from '../../../../utils/pinia';
 
 export default {
     name: 'Actions',
@@ -158,7 +158,7 @@ export default {
 
     computed: {
         enums() {
-            return useStore('enums').enums;
+            return useEnums().enums;
         },
         isViewable() {
             return this.file.isAccessible
