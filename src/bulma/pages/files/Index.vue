@@ -1,16 +1,20 @@
 <template>
-    <div class="file-manager"
+    <div class="files-wrapper"
         v-if="browsable.length">
         <top v-model:query="query"
             v-model:interval="interval"
-            :count="files.length"
-            @clear="query = '';fetch()"
+            :count="total"
+            :pagination="pagination"
+            :thumbnails="thumbnails"
+            @clear="clearQuery"
             @refresh="browse"
-            @update:query="browse"
-            @update:interval="browse"
+            @update:pagination="updatePagination"
+            @update:query="updateQuery"
+            @update:thumbnails="thumbnails = $event"
+            @update:interval="updateInterval"
             @upload-successful="select(uploadFolder)"/>
-        <div class="columns is-variable is-1">
-            <div class="column is-narrow py-1">
+        <div class="columns is-mobile is-variable is-1">
+            <div class="column is-narrow">
                 <div class="box folders p-1">
                     <p class="is-family-secondary has-text-weight-medium"
                         v-for="folder in browsable"
@@ -22,18 +26,20 @@
                     </p>
                 </div>
             </div>
-            <div class="column files">
-                <transition-group tag="div"
-                    class="columns is-multiline is-variable is-1"
-                    enter-active-class="animate__fadeIn"
-                    leave-active-class="animate__fadeOut">
-                    <div class="animate__animated column is-half py-1"
-                        v-for="file in files"
-                        :key="file.id">
-                        <file :file="file"
-                            @delete="destroy(file)"/>
-                    </div>
-                </transition-group>
+            <div class="column">
+                <div class="columns is-mobile is-multiline is-variable is-1"
+                    :class="{ 'is-centered': thumbnails }">
+                    <file v-for="file in files"
+                        :key="file.id"
+                        :file="file"
+                        :thumbnail="thumbnails"
+                        @delete="destroy(file)"/>
+                </div>
+                <enso-pagination :length="total"
+                    :loading="loading"
+                    :page="page"
+                    :page-size="pagination"
+                    @page-changed="changePage"/>
             </div>
             <loader large
                 v-if="loading"/>
@@ -43,6 +49,7 @@
 
 <script>
 import { debounce } from 'lodash';
+import { EnsoPagination } from '@enso-ui/pagination/bulma';
 import Loader from '@enso-ui/loader/bulma';
 import { files } from '../../../pinia/files';
 import Top from './components/Top.vue';
@@ -54,7 +61,9 @@ export default {
 
     inject: ['errorHandler', 'http', 'i18n', 'route'],
 
-    components: { Top, Folder, File, Loader },
+    components: {
+        EnsoPagination, Top, Folder, File, Loader,
+    },
 
     data: () => ({
         currentFolder: null,
@@ -64,7 +73,11 @@ export default {
             max: null,
         },
         loading: false,
+        page: 1,
+        pagination: 20,
         query: '',
+        thumbnails: false,
+        total: 0,
     }),
 
     computed: {
@@ -86,7 +99,7 @@ export default {
 
     methods: {
         browse() {
-            const { interval, query, currentFolder } = this;
+            const { currentFolder, interval, page, pagination, query } = this;
             const { isSystem, endpoint, id } = currentFolder;
 
             const path = isSystem
@@ -95,23 +108,60 @@ export default {
 
             this.loading = true;
 
-            this.http.get(path, { params: { interval, query } })
-                .then(({ data }) => (this.files = data))
+            this.http.get(path, {
+                params: { interval, page, pagination, query },
+            })
+                .then(({ data }) => {
+                    this.files = data.data;
+                    this.page = data.meta.current_page;
+                    this.pagination = data.meta.per_page;
+                    this.total = data.meta.total;
+                })
                 .catch(this.errorHandler)
                 .finally(() => (this.loading = false));
         },
         destroy({ id }) {
             this.loading = true;
 
-            const index = id => this.files.findIndex(file => file.id === id);
-
             this.http.delete(this.route('core.files.destroy', id, false))
-                .then(() => this.files.splice(index(id), 1))
+                .then(() => {
+                    if (this.files.length === 1 && this.page > 1) {
+                        this.page -= 1;
+                    }
+
+                    this.browse();
+                })
                 .catch(this.errorHandler)
                 .finally(() => (this.loading = false));
         },
+        changePage(page) {
+            this.page = page;
+            this.browse();
+        },
+        clearQuery() {
+            this.query = '';
+            this.resetPage();
+            this.browse();
+        },
         select(folder) {
+            this.resetPage();
             this.currentFolder = folder;
+            this.browse();
+        },
+        resetPage() {
+            this.page = 1;
+        },
+        updateInterval() {
+            this.resetPage();
+            this.browse();
+        },
+        updatePagination(pagination) {
+            this.pagination = pagination;
+            this.resetPage();
+            this.browse();
+        },
+        updateQuery() {
+            this.resetPage();
             this.browse();
         },
     },
@@ -119,20 +169,33 @@ export default {
 </script>
 
 <style lang="scss">
-    .file-manager {
-        .control.has-icons-right {
-            .icon.clear-button {
-                pointer-events: all;
+    .files-wrapper {
+        .icon.clear-button {
+            pointer-events: all;
+        }
+
+        .filter {
+            &.field {
+                justify-content: center;
             }
 
-            .input {
-                width: 20em;
+            .control {
+                .input {
+                    width: 24em;
+                }
+            }
+        }
+
+        .pagination-length {
+            .button.input {
+                width: 4rem;
+                justify-content: center;
             }
         }
 
         .folders {
             .button {
-                opacity: 0.7;
+                opacity: 0.6;
                 justify-content: flex-start;
                 padding-inline: 0.65rem;
                 width: 100%;
@@ -151,11 +214,8 @@ export default {
         .box.folders {
             .selected {
                 opacity: 1;
+                font-weight: bold;
             }
-        }
-
-        .files {
-            min-width: 0;
         }
     }
 </style>

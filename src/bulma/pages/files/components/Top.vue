@@ -1,8 +1,8 @@
 <template>
-    <div class="level is-mobile mb-4 files-top">
-        <div class="level-left">
-            <div class="level-item">
-                <div class="field has-addons has-addons-right">
+    <div class="columns is-mobile is-multiline is-variable is-1 is-centered">
+        <div class="column is-full-mobile is-narrow-tablet">
+            <div class="filter field has-addons has-addons-right">
+                <div class="box p-1 has-text-centered">
                     <div class="control has-icons-left has-icons-right">
                         <input class="input filter"
                             :value="query"
@@ -20,15 +20,42 @@
                     </div>
                 </div>
             </div>
-            <div class="level-item"
-                v-if="count > 0">
-                <span>
-                    {{ count }} {{ i18n('files')}}
-                </span>
+        </div>
+        <div class="column is-hidden-mobile"/>
+        <div class="column is-narrow">
+            <div class="box p-1">
+                <a class="button"
+                    @click="$emit('update:thumbnails', !thumbnails)">
+                    <span class="icon"
+                        v-if="thumbnails">
+                        <fa :icon="faImage"/>
+                    </span>
+                    <span class="icon"
+                        v-else>
+                        <fa :icon="faList"/>
+                    </span>
+                </a>
             </div>
         </div>
-        <div class="level-right">
-            <div class="level-item">
+        <div class="column is-narrow">
+            <div class="box p-1">
+                <dropdown class="pagination-length">
+                    <template #label>
+                        {{ pagination }}
+                    </template>
+                    <template #items>
+                        <dropdown-item v-for="value in paginationOptions"
+                            :key="value"
+                            :selected="pagination === value"
+                            @select="$emit('update:pagination', value)">
+                            {{ value }}
+                        </dropdown-item>
+                    </template>
+                </dropdown>
+            </div>
+        </div>
+        <div class="column is-narrow">
+            <div class="box p-1">
                 <enso-uploader v-bind="$attrs"
                     compact
                     multiple
@@ -44,7 +71,9 @@
                     </template>
                 </enso-uploader>
             </div>
-            <div class="level-item">
+        </div>
+        <div class="column is-narrow">
+            <div class="box p-1">
                 <a class="button"
                     @click="$emit('refresh')">
                     <span class="icon">
@@ -54,22 +83,31 @@
             </div>
         </div>
     </div>
-    <enso-date-filter class="box files-top__date-filter"
-        v-bind="$attrs"
-        v-model:filter="dateFilter"
-        compact/>
+    <div class="columns is-centered">
+        <div class="column is-narrow">
+            <enso-date-filter class="box"
+                v-bind="$attrs"
+                v-model:filter="dateFilter"
+                compact/>
+        </div>
+    </div>
 </template>
 
 <script>
 import { FontAwesomeIcon as Fa } from '@fortawesome/vue-fontawesome';
-import { faSearch, faArrowsRotate, faUpload } from '@fortawesome/free-solid-svg-icons';
+import {
+    faSearch, faArrowsRotate, faUpload, faList, faImage,
+} from '@fortawesome/free-solid-svg-icons';
+import { Dropdown, DropdownItem } from '@enso-ui/dropdown/bulma';
 import { EnsoUploader } from '@enso-ui/uploader/bulma';
 import { EnsoDateFilter } from '@enso-ui/filters/bulma';
 
 export default {
     name: 'Top',
 
-    components: { Fa, EnsoDateFilter, EnsoUploader },
+    components: {
+        Dropdown, DropdownItem, EnsoDateFilter, EnsoUploader, Fa,
+    },
 
     inject: ['i18n', 'route'],
 
@@ -82,61 +120,28 @@ export default {
             type: String,
             required: true,
         },
+        pagination: {
+            type: Number,
+            required: true,
+        },
+        thumbnails: {
+            type: Boolean,
+            required: true,
+        },
     },
 
-    emits: ['clear', 'refresh', 'update:query'],
+    emits: [
+        'clear', 'refresh', 'update:pagination', 'update:query', 'update:thumbnails',
+    ],
 
     data: () => ({
         faArrowsRotate,
+        faImage,
+        faList,
         faSearch,
         faUpload,
         dateFilter: 'thisMonth',
+        paginationOptions: [20, 40, 60, 80, 100],
     }),
 };
 </script>
-
-<style lang="scss">
-.files-top {
-    padding: 0.15rem 0;
-
-    .input.filter,
-    .button {
-        background-color: var(--bulma-box-background-color);
-    }
-
-    .input.filter {
-        color: var(--bulma-input-color);
-
-        &::placeholder {
-            color: var(--bulma-text-light);
-        }
-    }
-
-    .button {
-        color: var(--bulma-text-strong);
-
-        &:hover,
-        &:focus {
-            background-color: var(--enso-filter-surface);
-            color: var(--bulma-text-strong);
-        }
-    }
-
-    .clear-button {
-        .delete {
-            background-color: var(--bulma-scheme-main-ter);
-
-            &::before,
-            &::after {
-                background-color: var(--bulma-text);
-            }
-        }
-    }
-
-    &__date-filter {
-        background-color: var(--bulma-box-background-color);
-        border: 1px solid var(--enso-surface-border);
-        box-shadow: none;
-    }
-}
-</style>
