@@ -1,7 +1,7 @@
 {
   "name": "@enso-ui/files",
   "version": "5.4.8",
-  "description": "Basic files package",
+  "description": "File browser and file type administration pages for Enso UI",
   "main": "index.js",
   "repository": {
     "type": "git",
