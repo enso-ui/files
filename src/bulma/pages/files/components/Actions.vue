@@ -228,7 +228,7 @@ export default {
 
     &:hover,
     &:focus {
-        background-color: var(--enso-filter-surface);
+        background-color: var(--enso-surface);
         color: var(--bulma-text-strong);
     }
 }

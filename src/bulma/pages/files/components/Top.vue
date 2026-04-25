@@ -9,10 +9,10 @@
                             @input="$emit('update:query', $event.target.value)"
                             type="text"
                             :placeholder="i18n('Filter files')">
-                        <span class="icon is-small is-left has-text-muted">
+                        <span class="icon is-small is-left">
                             <fa :icon="faSearch"/>
                         </span>
-                        <span class="icon is-small is-right clear-button has-text-muted is-clickable"
+                        <span class="icon is-small is-right clear-button is-clickable"
                             @click="$emit('clear')"
                             v-if="query">
                             <a class="delete is-small"/>
