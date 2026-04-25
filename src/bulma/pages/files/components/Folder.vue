@@ -1,11 +1,12 @@
 <template>    
-    <a class="button is-naked"
+    <a class="menu-item-link"
         @click="$emit('selected')">
-        <span class="icon">
+        <span class="icon menu-item-icon"
+            v-if="folder.icon">
             <fa :icon="folder.icon"
                 size="sm"/>
         </span>
-        <span>
+        <span class="menu-item-label">
             {{ i18n(folder.name) }}
         </span>
         <span v-if="count > 0">&nbsp;({{ count }})</span>

@@ -15,15 +15,14 @@
             @upload-successful="select(uploadFolder)"/>
         <div class="columns is-mobile is-variable is-1">
             <div class="column is-narrow">
-                <div class="box folders p-1">
-                    <p class="is-family-secondary has-text-weight-medium"
+                <div class="box menu-list p-1">
+                    <div class="menu-item"
                         v-for="folder in browsable"
-                        :key="folder">
-                        <folder :class="{'selected': folderId === folder.id}"
+                        :key="folder.id">
+                        <folder :class="{'is-active': folderId === folder.id}"
                             :folder="folder"
-                            :key="folder.id"
                             @selected="select(folder)"/>
-                    </p>
+                    </div>
                 </div>
             </div>
             <div class="column">
@@ -35,7 +34,8 @@
                         :thumbnail="thumbnails"
                         @delete="destroy(file)"/>
                 </div>
-                <enso-pagination :length="total"
+                <enso-pagination class="is-small"
+                    :length="total"
                     :loading="loading"
                     :page="page"
                     :page-size="pagination"
@@ -183,38 +183,6 @@ export default {
                 .input {
                     width: 24em;
                 }
-            }
-        }
-
-        .pagination-length {
-            .button.input {
-                width: 4rem;
-                justify-content: center;
-            }
-        }
-
-        .folders {
-            .button {
-                opacity: 0.6;
-                justify-content: flex-start;
-                padding-inline: 0.65rem;
-                width: 100%;
-
-                .icon {
-                    width: 2em;
-                }
-
-                &:hover,
-                &:focus {
-                    opacity: 1;
-                }
-            }
-        }
-
-        .box.folders {
-            .selected {
-                opacity: 1;
-                font-weight: bold;
             }
         }
     }
