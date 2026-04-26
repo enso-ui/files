@@ -1,11 +1,19 @@
 <template>
-    <component :is="component"/>
+    <div class="column is-narrow p-1"
+        v-if="thumbnail">
+        <Thumbnain v-bind="$attrs"/>
+    </div>
+    <div class="column is-full-mobile is-half-tablet is-one-third-desktop"
+        v-else>
+        <Item v-bind="$attrs"/>
+    </div>
 </template>
 
 <script setup>
-import { computed } from 'vue';
 import Item from './Item.vue';
 import Thumbnail from './Thumbnail.vue';
+
+defineOptions({ inheritAttrs: false });
 
 const props = defineProps({
     thumbnail: {
@@ -13,6 +21,4 @@ const props = defineProps({
         default: false,
     },
 })
-
-const component = computed(() => props.thumbnail ? Thumbnail : Item);
 </script>
