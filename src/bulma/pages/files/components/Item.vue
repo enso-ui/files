@@ -174,10 +174,6 @@ export default {
                 }
             }
         }
-
-        &:hover {
-            border-color: var(--enso-control-highlight-border);
-        }
     }
 
     .filename .extension {

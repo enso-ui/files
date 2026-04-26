@@ -176,10 +176,6 @@ export default {
     .level {
         .level-left {
             overflow: hidden;
-
-            // .filename .base, .info {
-            //     word-break: break-all;
-            // }
         }
         .level-right {
             .v-popper__inner {
@@ -190,10 +186,6 @@ export default {
                 margin: 0 0 0 auto;
             }
         }
-    }
-
-    &:hover {
-        border-color: var(--enso-control-highlight-border);
     }
 }
 </style>

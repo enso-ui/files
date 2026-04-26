@@ -222,7 +222,6 @@ export default {
 }
 
 :deep(.file-actions .share-button) {
-    background-color: var(--enso-filter-control-surface);
     color: var(--bulma-text-strong);
     justify-content: center;
 
