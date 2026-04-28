@@ -48,7 +48,7 @@
 </template>
 
 <script>
-import { debounce } from 'lodash';
+import { debounce } from 'lodash-es';
 import { EnsoPagination } from '@enso-ui/pagination/bulma';
 import Loader from '@enso-ui/loader/bulma';
 import { files } from '../../../pinia/files';
