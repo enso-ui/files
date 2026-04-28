@@ -1,6 +1,6 @@
 {
   "name": "@enso-ui/files",
-  "version": "5.4.13",
+  "version": "5.4.14",
   "description": "File browser and file type administration pages for Enso UI",
   "main": "index.js",
   "repository": {
