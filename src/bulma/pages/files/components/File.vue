@@ -3,7 +3,7 @@
         v-if="thumbnail">
         <Thumbnail v-bind="$attrs"/>
     </div>
-    <div class="column is-full-mobile is-half-tablet is-one-third-desktop"
+    <div class="column is-full-mobile is-half-tablet is-one-third-fullhd"
         v-else>
         <Item v-bind="$attrs"/>
     </div>
