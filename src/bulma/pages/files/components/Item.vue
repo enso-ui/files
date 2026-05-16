@@ -57,9 +57,9 @@
                 </div>
                 <div class="level is-mobile">
                     <div class="level-left is-flex-shrink-1 min-w-0">
-                        <div class="level-item is-flex-shrink-1 min-w-0">
+                        <div class="level-item is-flex-shrink-1 min-w-0 is-justify-content-flex-start">
                             <p class="info is-family-code is-size-7 ellipsis">
-                                <span class="has-text-weight-bold ml-1">{{ file.size }}</span> {{ timestamp }}
+                                <span class="has-text-weight-bold">{{ file.size }}</span> {{ timestamp }}
                             </p>
                         </div>
                     </div>

@@ -1,7 +1,7 @@
 # Files
 
 [![License](https://img.shields.io/badge/license-MIT-10b981.svg)](https://github.com/enso-ui/files/blob/master/LICENSE)
-[![Stable](https://img.shields.io/badge/stable-5.4.16-2563eb.svg)](https://www.npmjs.com/package/@enso-ui/files)
+[![Stable](https://img.shields.io/badge/stable-5.4.17-2563eb.svg)](https://www.npmjs.com/package/@enso-ui/files)
 [![Downloads](https://img.shields.io/npm/dm/@enso-ui/files.svg)](https://www.npmjs.com/package/@enso-ui/files)
 [![Vue](https://img.shields.io/badge/vue-3.x-42b883.svg)](https://vuejs.org/)
 [![JavaScript](https://img.shields.io/badge/javascript-ES2020-f7df1e.svg)](https://developer.mozilla.org/docs/Web/JavaScript)

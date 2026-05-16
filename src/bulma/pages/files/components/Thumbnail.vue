@@ -5,8 +5,9 @@
                 v-if="isImage">
                 <img :src="route('core.files.show', file.id)">
             </figure>
-            <fa :icon="icon"
-                size="8x"
+            <fa class="file-icon"
+                :icon="icon"
+                size="5x"
                 v-else/>
         </div>
             <div class="level-item"
@@ -19,11 +20,11 @@
                     @keydown.enter="update"
                     @keydown.esc="cancelEdit">
         </div>
-        <div class="filename has-text-weight-bold has-text-centered is-size-7 
-            is-flex is-justify-content-center m-0"
+        <div class="filename has-text-weight-bold is-size-7 
+            is-flex is-justify-content-flex-start m-0"
             v-tooltip="`${file.name}.${file.extension}`"
             v-else>
-            <div class="level-item is-flex-shrink-1 min-w-0 mr-0">
+            <div class="level-item is-flex-shrink-1 min-w-0 mr-0 is-justify-content-flex-start">
                 <div class="ellipsis">
                     <span @click.right.prevent="edit">
                         {{ file.name }}.
@@ -38,7 +39,7 @@
                 </span>
             </div>
         </div>
-        <p class="info is-family-code is-size-7">
+        <p class="info is-family-code is-size-7 has-text-left">
             <span class="has-text-weight-bold">{{ file.size }}</span> {{ timestamp }}
         </p>
         <div class="level m-0">
@@ -163,9 +164,14 @@ export default {
     width: 12.5em;
 
     .preview {
+        align-items: center;
+        display: flex;
+        height: 9rem;
+        justify-content: center;
+
         .image.is-192x192 {
-                height: 192px;
-                width: 192px;
+                height: 9rem;
+                width: 100%;
 
                 img {
                     object-fit: contain;
