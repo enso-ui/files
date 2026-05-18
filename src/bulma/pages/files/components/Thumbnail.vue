@@ -5,8 +5,7 @@
                 v-if="isImage">
                 <img :src="route('core.files.show', file.id)">
             </figure>
-            <fa class="file-icon"
-                :icon="icon"
+            <fa :icon="icon"
                 size="5x"
                 v-else/>
         </div>
